@@ -1,0 +1,230 @@
+@if(session('success'))
+    <div style="color: green;">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div style="color: red;">
+        {{ session('error') }}
+    </div>
+@endif
+<h1>Manajemen Pengguna</h1>
+<a href="/dashboard">Kembali</a>
+<h2>Pengguna Aktif</h2>
+    <a href="{{ route('pengguna.createPemantau') }}">
+    Tambah Pemantau
+</a>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>No Hp</th>
+        <th>Role</th>
+        <th>Jabatan</th>
+        <th>Status</th>
+        
+        <th>Platon-Regu</th> 
+        <th>Aksi</th>
+        <th>Pln-Reg</th>
+    </tr>
+
+    @forelse($penggunaAktif as $user)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $user->name }}</td>
+        <td>{{ $user->email }}</td>
+         <td>{{ $user->phone ?? '-' }}</td>
+        <td>
+            @if($user->role === 'admin2')
+                Pemantau
+            @else
+                User
+            @endif
+        </td>
+        <td>
+            @if($user->role === 'admin2')
+                {{ $user->jabatan }}
+            @else
+                 Pegawai
+            @endif
+        </td>
+        <td>Aktif</td>
+         <td> 
+            
+    @if($user->role == 'user')
+        {{ $user->platon->nama ?? '-' }} /
+        @if($user->regu)
+            {{ $user->regu->nama }}
+        @else
+            <span style="color:red; font-size: large;">-</span>
+        @endif
+    @endif
+
+    </td>
+        <td>
+            
+            <form action="{{ route('pengguna.nonaktifkan', $user->id) }}"
+                  method="POST"
+                  style="display:inline;">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                    onclick="return confirm('Nonaktifkan pengguna ini?')">
+                    Nonaktifkan
+                </button>
+            </form>
+            
+        </td>
+       
+          
+        <td>
+   <form action="{{ route('pengguna.update', $user) }}" method="POST">
+    @csrf
+    @method('PUT')
+
+@if($user->role == 'user')
+
+    <select name="platon_id" id="platon_id">
+        <option value="">Pilih Platon</option>
+
+        @foreach($platons as $platon)
+            <option
+                value="{{ $platon->id }}"
+                @selected($user->platon_id == $platon->id)
+            >
+                {{ $platon->nama }}
+            </option>
+        @endforeach
+    </select>
+
+    <select name="regu_id" id="regu_id">
+        <option value="">Pilih Regu</option>
+
+        @foreach($regus as $regu)
+            <option
+                value="{{ $regu->id }}"
+                data-platon="{{ $regu->platon_id }}"
+                @selected($user->regu_id == $regu->id)
+            >
+                {{ $regu->nama }}
+            </option>
+        @endforeach
+    </select>
+
+
+</select>
+
+    <button type="submit">
+        Simpan
+    </button>
+    @endif
+</form>
+</td>
+    @empty
+    <tr>
+        <td colspan="7">Tidak ada pengguna aktif.</td>
+    </tr>
+    @endforelse
+</table>
+
+<br><br>
+
+<h2>Pengguna Nonaktif</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>No HP</th>
+        <th>Role</th>
+        <th>Jabatan</th>
+        <th>Status</th>
+        <th>Aksi</th>
+    </tr>
+
+    @forelse($penggunaNonaktif as $user)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $user->name }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->phone ?? '-' }}</td>
+        <td>
+            @if($user->role === 'admin2')
+                Pemantau
+            @else
+                User
+            @endif
+        </td>
+        <td>
+            @if($user->role === 'admin2')
+                {{ $user->jabatan }}
+            @else
+                 -
+            @endif
+        </td>
+        <td>Nonaktif</td>
+
+        <td>
+            <form action="{{ route('pengguna.restore', $user->id) }}"
+                  method="POST"
+                  style="display:inline;">
+                @csrf
+
+                <button type="submit"
+                    onclick="return confirm('Pulihkan pengguna ini?')">
+                    Pulihkan
+                </button>
+            </form>
+
+            <form action="{{ route('pengguna.forceDelete', $user->id) }}"
+                  method="POST"
+                  style="display:inline;">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                    onclick="return confirm('Hapus permanen pengguna ini?')">
+                    Hapus Permanen
+                </button>
+            </form>
+        </td>
+    </tr>
+    @empty
+    <tr>
+        <td colspan="7">Tidak ada pengguna nonaktif.</td>
+    </tr>
+    @endforelse
+</table>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const platonSelect = document.getElementById('platon_id');
+    const reguSelect = document.getElementById('regu_id');
+
+    function filterRegu() {
+
+        const platonId = platonSelect.value;
+
+        Array.from(reguSelect.options).forEach(option => {
+
+            if(option.value === '') {
+                option.hidden = false;
+                return;
+            }
+
+            option.hidden =
+                option.dataset.platon !== platonId;
+        });
+
+        reguSelect.value = '';
+    }
+
+    platonSelect.addEventListener('change', filterRegu);
+
+    filterRegu();
+});
+</script>s

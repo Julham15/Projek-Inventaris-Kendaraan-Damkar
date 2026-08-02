@@ -1,0 +1,274 @@
+
+@extends('admin.layouts')
+@section('navbar')
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col lg:pl-[280px] w-full h-full overflow-hidden relative">
+<!-- Decorative Background Element from Image -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNGOyKpqid-hUKByMo2miAhzoVdjTcaw9nOj1kHCAcsEzpYg-lbNgVhOPdpZwM-1tsPCYV2jJuiU3d9K27lyNWT0B37V052Wcr3g5GCrD-0V_YvGZ3q29wZWo4A_pSKbIynNdLZ9pwVBE9_C5c6OUUooehyD2yhDwy-xId5m0nXrARypCa3mtXEsgr9qgsLpSaujM-TvLpM0lXVToKyMtyk0fcMJuSwm8haRPs-CvYBLdQgLdyiHXapqwMuPKidbtJujnoINWxy-89'); background-size: cover; background-position: center;"></div>
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-40 bg-white border-b border-outline-variant">
+<div class="flex items-center gap-sm lg:hidden">
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<div class="hidden lg:block font-h2 text-h2 font-bold text-primary">Dashboard Overview</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+
+
+</div>
+
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto p-md lg:p-margin relative z-10 space-y-lg">
+<div class="flex justify-between items-end">
+<div>
+{{-- <h2 class="font-h2 text-h2 font-bold text-on-background">Dashboard Overview</h2> --}}
+<p class="font-body-regular text-body-regular text-on-surface-variant mt-1">Ringkasan operasional pemadam kebakaran.</p>
+</div>
+
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-on-surface-variant">Total Pos</span>
+<div class="bg-primary-container/20 p-sm rounded-full">
+<span class="material-symbols-outlined text-primary">domain</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $totalposko }}</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-on-surface-variant">Total Jenis Mobil</span>
+<div class="bg-secondary-container/20 p-sm rounded-full">
+<span class="material-symbols-outlined text-secondary">fire_truck</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $totalJenisMobil }}</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-on-surface-variant">Total Kendaraan</span>
+<div class="bg-tertiary-container/20 p-sm rounded-full">
+<span class="material-symbols-outlined text-tertiary">local_shipping</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $totalKendaraan }}</div>
+</div>
+<!-- Stat Card 4 -->
+
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-on-surface-variant">Total Laporan</span>
+<div class="bg-primary-container/20 p-sm rounded-full">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $totalLaporan }}</div>
+</div>
+<!-- Stat Card 5 -->
+<a href="{{ route('admin.dashboard.peralatan-rusak') }}">
+<div class="bg-surface-container-lowest rounded-lg border border-error p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-error">Total Peralatan Rusak</span>
+<div class="bg-error-container p-sm rounded-full">
+<span class="material-symbols-outlined text-error">build</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $jumlahPeralatanRusak }}</div>
+</div>
+</a>
+<!-- Stat Card 6 -->
+<a href="{{ route('admin.dashboard.kondisi-bermasalah') }}">
+<div class="bg-surface-container-lowest rounded-lg border border-tertiary p-md flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-h4 text-h4 text-tertiary">Kondisi Kendaraan Bermasalah</span>
+<div class="bg-tertiary-container/30 p-sm rounded-full">
+<span class="material-symbols-outlined text-tertiary">warning</span>
+</div>
+</div>
+<div class="font-h1 text-h1 font-bold text-on-background">{{ $jumlahKondisiPerhatian }}</div>
+</div>
+</div>
+</a>
+<!-- Main Dashboard Area: Chart & Tables -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-lg">
+<!-- Line Chart -->
+<div class="xl:col-span-2 glass-card rounded-lg p-md lg:p-lg border border-[#D1E9F6]">
+<h3 class="font-h3 text-h3 font-bold text-on-background mb-lg">Grafik jumlah laporan setiap bulan</h3>
+<div class="h-64 w-full relative">
+<canvas id="reportsChart" width="741" height="320" style="display: block; box-sizing: border-box; height: 256px; width: 593.1px;"></canvas>
+</div>
+</div>
+<!-- Right Column: Recent Info -->
+<div class="xl:col-span-1 space-y-lg">
+<!-- Latest Vehicles Table -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] overflow-hidden">
+<div class="p-md bg-primary text-white">
+<h3 class="font-h4 text-h4 font-medium">Informasi Terbaru (Kendaraan)</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-caption text-caption border-b border-outline-variant">
+<th class="py-sm px-md font-medium">Plat Nomor</th><th class="py-sm px-md font-medium">Pos</th>
+
+</tr>
+</thead>
+@foreach($kendaraanTerbaru as $item)
+<tbody class="font-body-regular text-body-regular">
+<tr class="border-b border-outline-variant hover:bg-[#E6F6FF] transition-colors">
+<td class="py-sm px-md">{{ $item->nomor_polisi }}</td><td class="py-sm px-md">{{ $item->jenisMobil->posko->nama_posko }}</td>
+</tr>
+</tbody>
+@endforeach
+</table>
+</div>
+</div>
+<!-- Latest Reports Table -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#D1E9F6] overflow-hidden">
+<div class="p-md bg-primary text-white">
+<h3 class="font-h4 text-h4 font-medium">Laporan Terbaru</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-caption text-caption border-b border-outline-variant"><th class="py-sm px-md font-medium">User</th><th class="py-sm px-md font-medium">Kendaraan</th><th class="py-sm px-md font-medium">Tanggal</th></tr>
+</thead>
+ @foreach($laporanTerbaru as $laporan)
+<tbody class="font-body-regular text-body-regular">
+<tr class="border-b border-outline-variant hover:bg-[#E6F6FF] transition-colors"><td class="py-sm px-md">{{ $laporan->user?->name ?? 'Dinonaktifkan'}}</td><td class="py-sm px-md">{{ $laporan->kendaraan->nomor_polisi }}</td><td class="py-sm px-md">{{ $laporan->created_at->format('d-m-Y') }}</td></tr>
+
+<tr class="hover:bg-[#E6F6FF] transition-colors"></tr>
+</tbody>
+@endforeach
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="h-8"></div> <!-- Bottom padding spacer -->
+</main>
+</div>
+
+<!-- Chart.js Initialization -->
+<script>
+       document.addEventListener('DOMContentLoaded', function () {
+
+    // Data dari Laravel
+    const laporanBulanan = @json($laporanBulanan);
+
+    // Nama bulan
+    const namaBulan = [
+        '', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei',
+        'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'
+    ];
+
+    // Labels dan Data
+    const labels = laporanBulanan.map(item => namaBulan[item.bulan]);
+    const dataLaporan = laporanBulanan.map(item => item.total);
+
+    // Canvas
+    const ctx = document.getElementById('reportsChart').getContext('2d');
+
+    // Gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(56, 182, 255, 0.5)');
+    gradient.addColorStop(1, 'rgba(56, 182, 255, 0)');
+
+    // Chart
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah Laporan',
+                data: dataLaporan,
+                borderColor: '#006493',
+                backgroundColor: gradient,
+                borderWidth: 2,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#006493',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#2c3136',
+                    titleFont: {
+                        family: 'Plus Jakarta Sans',
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: 'Plus Jakarta Sans',
+                        size: 12
+                    },
+                    padding: 12,
+                    cornerRadius: 4,
+                    displayColors: false
+                }
+            },
+
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Plus Jakarta Sans',
+                            size: 12
+                        },
+                        color: '#6e7882'
+                    }
+                },
+
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#dfe3e9',
+                        borderDash: [5, 5],
+                        drawBorder: false
+                    },
+                    ticks: {
+                        stepSize: 5,
+                        font: {
+                            family: 'Plus Jakarta Sans',
+                            size: 12
+                        },
+                        color: '#6e7882'
+                    }
+                }
+            }
+        }
+    });
+
+});
+    </script>
+
+
+@endsection

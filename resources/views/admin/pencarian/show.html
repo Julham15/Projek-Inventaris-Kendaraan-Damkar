@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Kendaraan</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 20px;
+        }
+
+        .card{
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td{
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<a href="{{ route('pencarian.index') }}">
+    ← Kembali
+</a>
+
+<div class="card">
+
+    <h1>Detail Kendaraan</h1>
+
+    <p>
+        <strong>Nomor Polisi:</strong>
+        {{ $kendaraan->nomor_polisi }}
+    </p>
+
+    <p>
+        <strong>Jenis Mobil:</strong>
+        {{ $kendaraan->jenisMobil->nama_jenis }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        {{ $kendaraan->status }}
+    </p>
+
+</div>
+
+<div class="card">
+
+    <h2>Data Peralatan</h2>
+
+    <table>
+
+        <tr>
+            <th>Nama Peralatan</th>
+            <th>Kondisi</th>
+        </tr>
+
+        @forelse($kendaraan->peralatans as $item)
+
+        <tr>
+
+            <td>{{ $item->nama_alat }}</td>
+
+            <td>{{ $item->kondisi }}</td>
+
+        </tr>
+
+        @empty
+
+        <tr>
+
+            <td colspan="2">
+                Tidak ada peralatan
+            </td>
+
+        </tr>
+
+        @endforelse
+
+    </table>
+<a href="{{ route('posko.jenis-mobil.kendaraan.peralatan.create',
+    [
+        $kendaraan->jenisMobil->posko->id,
+        $kendaraan->jenisMobil->id,
+        $kendaraan->id
+    ]
+) }}">
+
+    Tambah Peralatan
+
+</a>
+</div>
+<div class="card">
+
+    <h2>Data Kondisi</h2>
+
+    <table>
+
+        <tr>
+            <th>Nama Alat/Bahan</th>
+            <th>Status</th>
+        </tr>
+
+        @forelse($kendaraan->kondisis as $i)
+
+        <tr>
+
+            <td>{{ $i->nama_kondisi}}</td>
+
+            <td>{{ $i->status }}</td>
+
+        </tr>
+
+        @empty
+
+        <tr>
+
+            <td colspan="2">
+                Tidak ada kondisi
+            </td>
+
+        </tr>
+
+        @endforelse
+
+    </table>
+<a href="{{ route('posko.jenis-mobil.kendaraan.kondisi.create',
+    [
+        $kendaraan->jenisMobil->posko->id,
+        $kendaraan->jenisMobil->id,
+        $kendaraan->id
+    ]
+) }}">
+
+    Tambah Kondisi
+
+</a>
+</div>
+
+</body>
+</html>

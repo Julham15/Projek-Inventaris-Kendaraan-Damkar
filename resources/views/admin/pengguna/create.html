@@ -1,0 +1,57 @@
+<h1>Tambah Pemantau</h1>
+
+@if ($errors->any())
+    <div style="color:red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<form action="{{ route('pengguna.storePemantau') }}" method="POST">
+    @csrf
+
+    <p>Nama</p>
+    <input type="text" name="name" value="{{ old('name') }}" required>
+
+    <p>Email</p>
+    <input type="email" name="email" value="{{ old('email') }}" required>
+
+    <p>No HP</p>
+    <input type="text" name="phone" value="{{ old('phone') }}">
+
+    <p>Jabatan</p>
+    <select name="jabatan" required>
+        <option value="">-- Pilih Jabatan --</option>
+        <option value="Kepala Dinas" {{ old('jabatan') == 'Kepala Dinas' ? 'selected' : '' }}>
+            Kepala Dinas
+        </option>
+
+        <option value="Sekretaris" {{ old('jabatan') == 'Sekretaris' ? 'selected' : '' }}>
+            Sekretaris
+        </option>
+
+        <option value="Kepala Seksi" {{ old('jabatan') == 'Kepala Seksi' ? 'selected' : '' }}>
+            Kepala Seksi
+        </option>
+        <option value="Kepala Bidang" {{ old('jabatan') == 'Kepala Bidang' ? 'selected' : '' }}>
+            Kepala Bidang
+        </option>
+    </select>
+
+    <p>Password</p>
+    <input type="password" name="password" required>
+
+    <p>Konfirmasi Password</p>
+    <input type="password" name="password_confirmation" required>
+
+    <br><br>
+    <button type="submit">
+        Simpan
+    </button>
+    <a href="{{ route('pengguna.index') }}">
+        Kembali
+    </a>
+</form>

@@ -1,0 +1,61 @@
+<h1>Data Kondisi Kendaraan</h1>
+
+<a href="{{ route('posko.jenis-mobil.kendaraan.kondisi.create', [$posko->id,$jenis_mobil->id, $kendaraan->id]) }}">
+    Tambah Kondisi</a>
+<td><a href="{{ route('posko.jenis-mobil.kendaraan.index',[$posko->id,$jenis_mobil->id, $kendaraan->id]) }}">
+    kembali</a>
+</td>
+<br><br>
+
+<table border="1" cellpadding="10">
+
+    <tr>
+        <th>No</th>
+        <th>Nama Kondisi</th>
+        <th>Status</th>
+        {{-- <th>Keterangan</th> --}}
+        <th>Aksi</th>
+    </tr>
+
+    @foreach($kondisis as $item)
+
+    <tr>
+
+        <td>{{ $loop->iteration }}</td>
+
+        <td>{{ $item->nama_kondisi }}</td>
+
+        <td>{{ $item->status }} </td>
+
+        {{-- <td>{{ $item->keterangan }}</td> --}}
+
+        <td>
+
+            <a href="{{ route('posko.jenis-mobil.kendaraan.kondisi.edit',
+            [$posko->id,$jenis_mobil->id, $kendaraan->id, $item->id]) }}">
+
+                Edit
+
+            </a>
+
+            <form action="{{ route('posko.jenis-mobil.kendaraan.kondisi.destroy',
+            [$posko->id,$jenis_mobil->id, $kendaraan->id, $item->id]) }}"
+
+                method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit">
+                    Hapus
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    @endforeach
+
+</table>

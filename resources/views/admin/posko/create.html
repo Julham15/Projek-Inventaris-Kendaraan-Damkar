@@ -1,0 +1,23 @@
+<x-app-layout>
+    <x-slot name="header">
+        Tambah Posko
+    </x-slot>
+
+    <div class="py-6">
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+
+            <form action="{{ route('posko.store') }}" method="POST">
+                @csrf
+
+                @include('admin.posko._form')
+
+                <div class="mt-4">
+                    <x-primary-button>
+                        Simpan
+                    </x-primary-button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</x-app-layout>

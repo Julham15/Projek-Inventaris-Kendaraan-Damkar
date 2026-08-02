@@ -1,0 +1,62 @@
+<h1>Tambah Peralatan</h1>
+<a href="{{ route('posko.jenis-mobil.kendaraan.peralatan.index',[$posko->id,$jenis_mobil->id, $kendaraan->id]) }}">Kembali</a>
+<form action="{{ route(
+    'posko.jenis-mobil.kendaraan.peralatan.store',
+    [$posko->id,$jenis_mobil->id, $kendaraan->id]
+) }}"
+method="POST"
+enctype="multipart/form-data">
+
+    @csrf
+
+    <p>
+        Kendaraan:
+        {{ $kendaraan->nomor_polisi }}
+    </p>
+
+    <br>
+
+    <label>Nama Alat</label>
+    <input type="text" name="nama_alat">
+
+    <br><br>
+
+   
+
+    <label>Jumlah</label>
+    <input type="number" name="jumlah">
+
+    <br><br>
+
+    <label>Kondisi</label>
+
+    <select name="kondisi">
+
+        <option value="Baik">
+            Baik
+        </option>
+
+        <option value="Rusak Ringan">
+            Rusak Ringan
+        </option>
+
+        <option value="Rusak Berat">
+            Rusak Berat
+        </option>
+
+    </select>
+    <br><br>
+    <label>Tanggal Pengadaan</label>
+
+    <input type="date"
+           name="tanggal_pengadaan">
+
+    <br><br>
+
+  
+
+    <button type="submit">
+        Simpan
+    </button>
+
+</form>

@@ -1,0 +1,16 @@
+<h1>Tambah Jenis Mobil</h1>
+
+<form action="{{ route('posko.jenis-mobil.store',$posko) }}" method="POST"  enctype="multipart/form-data">
+    @csrf
+
+    <input type="text"
+           name="nama_jenis"
+           placeholder="Nama Jenis">
+
+   
+     <input type="file"
+           name="gambar">
+    <button type="submit">
+        Simpan
+    </button>
+</form>

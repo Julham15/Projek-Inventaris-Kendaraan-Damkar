@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard User</title>
+
+    <style>
+
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            margin:0;
+            padding:0;
+        }
+
+        .navbar{
+            background:#1e293b;
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .navbar a{
+            color:white;
+            text-decoration:none;
+            margin-right:15px;
+            font-weight:bold;
+        }
+
+        .logout-btn{
+            background:red;
+            color:white;
+            border:none;
+            padding:8px 15px;
+            cursor:pointer;
+            border-radius:5px;
+        }
+
+        .container{
+            padding:30px;
+        }
+
+        .title{
+            margin-bottom:25px;
+        }
+
+        .card-wrapper{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-bottom:30px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            flex:1;
+            min-width:220px;
+        }
+
+        .card h3{
+            margin:0;
+            font-size:18px;
+            color:#555;
+        }
+
+        .card p{
+            font-size:35px;
+            font-weight:bold;
+            margin-top:15px;
+            color:#111827;
+        }
+
+        .section-title{
+            margin-top:40px;
+            margin-bottom:20px;
+        }
+
+        .chart-box{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+
+        <div>
+            <a href="{{ route('profile.edit') }}">Profil</a>
+
+            <a href="{{ route('laporan.index') }}">
+                Laporan
+            </a>
+        </div>
+
+        <form method="POST"
+              action="{{ route('logout') }}">
+
+            @csrf
+
+            <button type="submit" class="logout-btn">
+                Logout
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="container">
+
+        <h1 class="title">
+          Selamat Datang, {{ $user }}
+        </h1>
+
+        <h2>Statistik Hari Ini</h2>
+
+        <div class="card-wrapper">
+
+            <div class="card">
+                <h3>Total Laporan</h3>
+                <p>{{ $laporanHarian }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Kendaraan Dilapor</h3>
+                <p>{{ $kendaraanHarian }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Peralatan Rusak</h3>
+                <p>{{ $peralatanRusakHarian }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Kondisi Bermasalah</h3>
+                <p>{{ $kondisiBermasalahHarian }}</p>
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+            Statistik Mingguan
+        </h2>
+
+        <div class="card-wrapper">
+
+            <div class="card">
+                <h3>Total Laporan</h3>
+                <p>{{ $laporanMingguan }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Kendaraan Dilapor</h3>
+                <p>{{ $kendaraanMingguan }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Peralatan Rusak</h3>
+                <p>{{ $peralatanRusakMingguan }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Kondisi Bermasalah</h3>
+                <p>{{ $kondisiBermasalahMingguan }}</p>
+            </div>
+
+        </div>
+
+
+        <h2 class="section-title">
+            Grafik Statistik Mingguan
+        </h2>
+
+        <div class="chart-box">
+
+            <canvas id="myChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: [
+
+                    'Laporan',
+                    'Kendaraan',
+                    'Peralatan Rusak',
+                    'Kondisi Bermasalah'
+
+                ],
+
+                datasets: [{
+
+                    label: 'Statistik Mingguan',
+
+                    data: [
+
+                        {{ $laporanMingguan }},
+                        {{ $kendaraanMingguan }},
+                        {{ $peralatanRusakMingguan }},
+                        {{ $kondisiBermasalahMingguan }}
+
+                    ],
+
+                    borderWidth: 1
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

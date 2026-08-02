@@ -1,0 +1,76 @@
+<h1>Edit Kendaraan</h1>
+
+<form action="{{ route(
+    'posko.jenis-mobil.kendaraan.update',
+    [$posko->id,$jenis_mobil->id, $kendaraan->id]
+) }}"
+      method="POST"
+      enctype="multipart/form-data">
+
+    @csrf
+    @method('PUT')
+
+
+
+    <br>
+
+    <div>
+        <label>Nomor Polisi</label>
+        <br>
+
+        <input type="text"
+               name="nomor_polisi"
+               value="{{ $kendaraan->nomor_polisi }}">
+    </div>
+
+    <br>
+
+    <div>
+        <label>Deskripsi</label>
+        <br>
+
+        <textarea name="deskripsi">{{ $kendaraan->deskripsi }}</textarea>
+    </div>
+
+    <br>
+    {{-- <td>
+       <select name="status" class="form-control">
+
+    <option value="Aktif"
+    {{ old('status', $data->status ?? '') == 'Aktif' ? 'selected' : '' }}>
+    Aktif
+</option>
+
+<option value="Tidak Aktif"
+    {{ old('status', $data->status ?? '') == 'Tidak Aktif' ? 'selected' : '' }}>
+    Tidak Aktif
+</option>
+            </td> --}}
+    <div>
+
+        @if ($kendaraan->gambar)
+
+            <img src="{{ asset('storage/' . $kendaraan->gambar) }}"
+                 width="150">
+
+        @endif
+
+    </div>
+
+    <br>
+
+    <div>
+        <label>Ganti Gambar</label>
+        <br>
+
+        <input type="file"
+               name="gambar">
+    </div>
+
+    <br>
+
+    <button type="submit">
+        Update
+    </button>
+
+</form>

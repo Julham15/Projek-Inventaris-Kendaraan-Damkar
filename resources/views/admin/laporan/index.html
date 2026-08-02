@@ -1,0 +1,174 @@
+<h1>Data Laporan</h1>
+
+<a href="{{ route('admin.dashboard.index') }}">kembali</a>
+{{-- =========================
+    FILTER
+========================= --}}
+<form method="GET"
+      action="{{ route('admin.laporan.index') }}">
+
+    {{-- SEARCH --}}
+    <input type="text"
+           name="search"
+           placeholder="Cari pelapor / kendaraan..."
+           value="{{ request('search') }}">
+    
+
+    {{-- STATUS --}}
+    <select name="status">
+        <option value="">
+            Semua Status
+        </option>
+        <option value="Diproses"
+            {{ request('status') == 'Diproses' ? 'selected' : '' }}>
+            Diproses
+        </option>
+        <option value="Selesai"
+            {{ request('status') == 'Selesai' ? 'selected' : '' }}>
+            Selesai
+        </option>
+
+        <option value="Diarsipkan"
+            {{ request('status') == 'Diarsipkan' ? 'selected' : '' }}>
+
+            Diarsipkan
+
+        </option>
+
+    </select>
+    {{-- POSKO --}}
+<select name="posko">
+    <option value="">
+        Semua Posko
+    </option>
+
+    @foreach($poskos as $posko)
+        <option value="{{ $posko->id }}"
+            {{ request('posko') == $posko->id ? 'selected' : '' }}>
+
+            {{ $posko->nama_posko }}
+
+        </option>
+    @endforeach
+</select>
+<select name="platon"
+        class="form-control"
+        onchange="this.form.submit()">
+
+    <option value="">Semua Platon</option>
+
+    @foreach($platons as $platon)
+        <option value="{{ $platon->id }}"
+            {{ request('platon') == $platon->id ? 'selected' : '' }}>
+            {{ $platon->nama }}
+        </option>
+    @endforeach
+</select>
+<select name="regu" class="form-control">
+    <option value="">Semua Regu</option>
+
+    @foreach($regus as $regu)
+        <option value="{{ $regu->id }}"
+            {{ request('regu') == $regu->id ? 'selected' : '' }}>
+            {{ $regu->nama }}
+        </option>
+    @endforeach
+</select>
+    {{-- TANGGAL --}}
+     dari <input type="date"
+           name="dari"
+           value="{{ request('dari') }}"> sampai
+
+    <input type="date"
+           name="sampai"
+           value="{{ request('sampai') }}">
+
+    <button type="submit">
+        Filter
+    </button>
+    <a href="{{ route('admin.laporan.index') }}">
+        Reset
+    </a>
+</form>
+<br>
+<br>
+<table border="1"
+       cellpadding="10"
+       width="100%">
+    <tr>
+        <th>No</th>
+        <th>Posko</th>
+         <th>Platon/Regu</th>
+        <th>Pelapor</th>
+        
+        <th>Kendaraan</th>
+        <th>Peralata<br>   Bermasalah</th>
+        <th>Kondisi <br>Bermasalah</th>
+        <th>Status</th>
+        <th>waktu lapor</th>
+        <th>Aksi</th>
+    </tr>
+    @forelse($laporans as $item)
+        <tr>
+            <td>
+                {{ $loop->iteration }}
+            </td>
+            <td>
+                {{ $item->kendaraan->jenisMobil->posko->nama_posko ?? '-' }}
+            </td>
+             <td>
+                {{ $item->platon->nama }} / {{ $item->regu->nama }}
+            </td>
+            <td>
+                {{ $item->user->name }}
+            </td>
+            <td>
+                {{ $item->kendaraan->nomor_polisi }}
+            </td>
+             <td>{{$item->laporanPeralatans->where('kondisi', 'Rusak Berat')->count()}}</td>
+            <td>{{$item->laporanKondisis->where('status', 'Perlu Perhatian')->count()}}</td>
+
+            <td>
+                @if($item->status == 'Diproses')
+                    <span style="color:orange;">
+                        Diproses
+                    </span>
+                @elseif($item->status == 'Selesai')
+                    <span style="color:green;">
+                        Selesai
+                    </span>
+                @elseif($item->status == 'Diarsipkan')
+                    <span style="color:gray;">
+                        Diarsipkan
+                    </span>
+                @else
+                    <span style="color:red;">
+                        Ditolak
+                    </span>
+                @endif
+            </td>
+            <td>
+                 {{ $item->created_at->format('d-m-Y') }}
+            </td>
+            <td>
+                <a href="{{ route('admin.laporan.show', $item->id) }}">
+                    Detail
+                </a>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="7">
+                Data laporan tidak ditemukan
+
+            </td>
+
+        </tr>
+    @endforelse
+
+</table>
+
+
+
+<br>
+{{ $laporans->withQueryString()->links() }}

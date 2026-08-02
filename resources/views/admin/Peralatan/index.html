@@ -1,0 +1,75 @@
+<h1>Data Peralatan Dari Mobil {{ $kendaraan->nomor_polisi }}</h1>
+
+<a href="{{ route('posko.jenis-mobil.kendaraan.peralatan.create',[$posko->id,$jenis_mobil->id, $kendaraan->id]) }}">
+    Tambah Peralatan
+</a>
+<td><a href="{{ route('posko.jenis-mobil.kendaraan.index',[$posko->id,$jenis_mobil->id, $kendaraan->id]) }}">
+    kembali</a>
+</td>
+<br><br>
+
+@if(session('success'))
+    <p>{{ session('success') }}</p>
+@endif
+
+<table border="1" cellpadding="10">
+
+    <tr>
+        <th>No</th>
+        <th>Nama Alat</th>
+        {{-- <th>Gambar</th> --}}
+        <th>Jumlah</th>
+        <th>Kondisi</th>
+        <th>Tanggal Pengadaan</th>
+        <th>Aksi</th>
+    </tr>
+
+    @foreach($peralatans as $item)
+
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+
+       
+
+        <td>{{ $item->nama_alat }}</td>
+
+        {{-- <td>
+            @if($item->gambar)
+                <img src="{{ asset('storage/' . $item->gambar) }}"
+                     width="100">
+            @endif
+
+        </td> --}}
+
+        <td>
+            {{ $item->jumlah }}</td>
+
+        <td>{{ $item->kondisi }}</td>
+
+        <td>{{ $item->tanggal_pengadaan }}</td>
+
+        <td>
+
+            <a href="{{ route('posko.jenis-mobil.kendaraan.peralatan.edit',[$posko->id,$jenis_mobil->id, $kendaraan->id, $item->id]) }}">
+                Edit
+            </a>
+
+            <form action="{{ route('posko.jenis-mobil.kendaraan.peralatan.destroy',[$posko->id,$jenis_mobil->id, $kendaraan->id, $item->id]) }}"
+                  method="POST">
+
+                @csrf
+                @method('DELETE')
+
+                <button type="submit">
+                    Hapus
+                </button>
+
+            </form>
+
+        </td>
+
+    </tr>
+
+    @endforeach
+
+</table>

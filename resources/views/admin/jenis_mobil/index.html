@@ -1,0 +1,49 @@
+<h1>Data Jenis Mobil</h1>
+
+<a href="{{ route('posko.jenis-mobil.create',$posko) }}">
+    Tambah Data
+</a>
+<a href="{{ route('admin.dashboard.index') }}">
+    Dashboard
+</a>
+
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>No</th>
+        <th>Nama Jenis</th>
+        <th>Gambar</th>
+        <th>Jumlah</th>
+        <th>Aksi</th>
+        
+    </tr>
+
+    @foreach ($data as $item)
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $item->nama_jenis }}</td>
+        <td>@if ($item->gambar)<img src="{{ asset('storage/' . $item->gambar) }}"
+             width="100">@endif</td>
+        <td>{{ $item->jumlah_mobil}}</td>
+        <td><a href="{{ route('posko.jenis-mobil.kendaraan.index',[$posko->id,$item->id]) }}">
+    Kelola Kendaraan</td>
+       <td>
+        </a>
+     <a href="{{ route('posko.jenis-mobil.edit', [$posko->id, $item->id]) }}">
+    Edit
+</a>
+
+            <form action="{{ route('posko.jenis-mobil.destroy',[$posko->id, $item->id]) }}"
+                  method="POST">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit">
+                    Hapus
+                </button>
+            </form>
+    </td> 
+        </td>
+    </tr>
+    @endforeach
+</table>

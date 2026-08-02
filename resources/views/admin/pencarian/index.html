@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pencarian Inventaris</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 20px;
+        }
+
+        .card{
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td{
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        select,
+        button{
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .top-menu{
+            margin-bottom: 20px;
+        }
+
+        .btn{
+            background: #3490dc;
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="top-menu">
+
+    <a href="{{ route('admin.dashboard.index') }}">
+        Dashboard
+    </a>
+
+
+</div>
+
+<div class="card">
+
+    <h1>Pencarian Inventaris</h1>
+
+    <form method="GET"
+          action="{{ route('pencarian.index') }}">
+        <label>Posko</label>
+<br>
+
+<select name="posko_id">
+
+    <option value="">
+        -- Semua Posko --
+    </option>
+
+    @foreach($poskos as $item)
+
+        <option value="{{ $item->id }}"
+            {{ request('posko_id') == $item->id ? 'selected' : '' }}>
+
+            {{ $item->nama_posko }}
+
+        </option>
+
+    @endforeach
+
+</select>
+
+<br><br>
+        <label>Jenis Mobil</label>
+
+        <br>
+
+        <select name="jenis_mobil_id">
+
+            <option value="">
+                -- Semua Jenis --
+            </option>
+
+            @foreach($jenisMobil as $item)
+
+                <option value="{{ $item->id }}"
+                    {{ request('jenis_mobil_id') == $item->id ? 'selected' : '' }}>
+
+                    {{ $item->nama_jenis }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+        <br><br>
+
+        <label>Kendaraan</label>
+
+        <br>
+
+        <select name="kendaraan_id">
+
+            <option value="">
+                -- Semua Kendaraan --
+            </option>
+
+            @foreach($kendaraans as $item)
+
+                <option value="{{ $item->id }}"
+                    {{ request('kendaraan_id') == $item->id ? 'selected' : '' }}>
+
+                    {{ $item->nomor_polisi }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            Cari
+        </button>
+
+    </form>
+
+</div>
+
+<div class="card">
+
+    <h2>Hasil Pencarian</h2>
+
+    <table>
+
+        <tr>
+
+            <th>Nama Peralatan</th>
+            <th>Kondisi</th>
+            <th>Kendaraan</th>
+            <th>Aksi</th>
+
+        </tr>
+
+        @forelse($peralatans as $item)
+
+        <tr>
+
+            <td>{{ $item->nama_alat }}</td>
+
+            <td>{{ $item->kondisi }}</td>
+
+            <td>{{ $item->kendaraan->nomor_polisi }}</td>
+
+            <td>
+
+                <a class="btn"
+                   href="{{ route('pencarian.show',$item->kendaraan_id) }}">
+
+                    Lihat Detail
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        @empty
+
+        <tr>
+
+            <td colspan="4">
+                Data tidak ditemukan
+            </td>
+
+        </tr>
+
+        @endforelse
+
+    </table>
+
+</div>
+
+</body>
+</html>
