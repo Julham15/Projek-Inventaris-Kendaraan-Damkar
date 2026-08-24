@@ -98,49 +98,66 @@
                         </h3>
                     </div>
                     <div class="p-lg">
-                        <form action="{{ route('admin.laporan.update', $laporan->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+                       @if($laporan->user)
+    <form action="{{ route('admin.laporan.update', $laporan->id) }}" method="POST">
+        @csrf
+        @method('PUT')
 
-                            <div class="space-y-4">
-                                <div class="space-y-1">
-                                    <label class="font-h4 text-h4 text-on-surface" for="status">Status</label>
-                                    <select name="status" 
-                                            id="status"
-                                            class="w-full px-md py-sm border border-outline-variant rounded-lg font-body-regular focus:ring-2 focus:ring-primary focus:border-transparent transition-all appearance-none bg-white">
-                                        <option value="Diproses" {{ $laporan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                                        <option value="Selesai" {{ $laporan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                                        <option value="Diarsipkan" {{ $laporan->status == 'Diarsipkan' ? 'selected' : '' }}>Diarsipkan</option>
-                                    </select>
-                                </div>
+        <div class="space-y-4">
+            <div class="space-y-1">
+                <label class="font-h4 text-h4 text-on-surface" for="status">
+                    Status
+                </label>
 
-                                <!-- Preview Status -->
-                                <div class="p-3 bg-surface-container rounded-lg border border-outline-variant">
-                                    <p class="font-small text-small text-on-surface-variant mb-1">Preview Status:</p>
-                                    <div id="statusPreview" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
-                                        @if($laporan->status == 'Diproses') bg-yellow-100 text-yellow-800 border border-yellow-200
-                                        @elseif($laporan->status == 'Selesai') bg-green-100 text-green-800 border border-green-200
-                                        @elseif($laporan->status == 'Diarsipkan') bg-gray-100 text-gray-800 border border-gray-200
-                                        @else bg-red-100 text-red-800 border border-red-200
-                                        @endif">
-                                        <span class="w-1.5 h-1.5 rounded-full mr-1.5 inline-block
-                                            @if($laporan->status == 'Diproses') bg-yellow-500
-                                            @elseif($laporan->status == 'Selesai') bg-green-500
-                                            @elseif($laporan->status == 'Diarsipkan') bg-gray-500
-                                            @else bg-red-500
-                                            @endif">
-                                        </span>
-                                        <span id="statusText">{{ $laporan->status }}</span>
-                                    </div>
-                                </div>
+                <select name="status"
+                        id="status"
+                        class="w-full px-md py-sm border border-outline-variant rounded-lg font-body-regular focus:ring-2 focus:ring-primary focus:border-transparent transition-all appearance-none bg-white">
 
-                                <button type="submit" 
-                                        class="w-full py-3 rounded-lg bg-primary text-on-primary font-h4 text-h4 hover:opacity-80 transition-colors shadow-sm active:scale-[0.98] flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined">save</span>
-                                    Simpan Perubahan
-                                </button>
-                            </div>
-                        </form>
+                    <option value="Diproses" {{ $laporan->status == 'Diproses' ? 'selected' : '' }}>
+                        Diproses
+                    </option>
+
+                    <option value="Selesai" {{ $laporan->status == 'Selesai' ? 'selected' : '' }}>
+                        Selesai
+                    </option>
+
+                    <option value="Diarsipkan" {{ $laporan->status == 'Diarsipkan' ? 'selected' : '' }}>
+                        Diarsipkan
+                    </option>
+                </select>
+            </div>
+
+            {{-- Preview status --}}
+            {{-- bagian preview kamu tetap di sini --}}
+
+            <button type="submit"
+                    class="w-full py-3 rounded-lg bg-primary text-on-primary font-h4 text-h4 hover:opacity-80 transition-colors shadow-sm active:scale-[0.98] flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined">save</span>
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+@else
+    {{-- User sudah dinonaktifkan --}}
+    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-red-600">
+                person_off
+            </span>
+
+            <div>
+                <p class="font-semibold text-red-700">
+                    Status laporan dikunci
+                </p>
+
+                <p class="text-sm text-red-600 mt-1">
+                    User yang membuat laporan ini sudah dinonaktifkan.
+                    Status laporan tidak dapat diubah.
+                </p>
+            </div>
+        </div>
+    </div>
+@endif
                     </div>
                 </div>
             </div>

@@ -111,6 +111,20 @@ public function update(Request $request, User $user)
         if ($user->role === 'admin') {
             return redirect()->route('pengguna.index')->with('error', 'Akun admin tidak dapat dinonaktifkan.');
         }
+        // Ambil laporan yang masih Diproses
+    $laporans = $user->laporans()
+        ->where('status', 'Diproses')
+        ->get();
+
+    foreach ($laporans as $laporan) {
+        $laporan->status = 'Selesai';
+
+        if (is_null($laporan->selesai_at)) {
+            $laporan->selesai_at = now();
+        }
+
+        $laporan->save();
+    }
         $user->delete();
             return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dinonaktifkan.');
       }

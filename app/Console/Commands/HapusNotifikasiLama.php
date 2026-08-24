@@ -26,7 +26,8 @@ class HapusNotifikasiLama extends Command
     public function handle()
 {
     DB::table('notifications')
-        ->where('created_at', '<', now()->subDays(7))
+        ->where('created_at', '<=', now()->subDays(7))
+        // ->where('created_at', '<=', now()->subSeconds(30))
         ->delete();
 
     $this->info('Notifikasi lama berhasil dihapus');

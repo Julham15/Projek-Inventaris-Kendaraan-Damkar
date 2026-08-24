@@ -4,15 +4,18 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
-
+//NOTIFIKASI------------------
 Schedule::command('app:hapus-notifikasi-lama')
     ->daily();
+    // Schedule::command('app:hapus-notifikasi-lama')
+    // ->everyMinute();
 
-// Schedule::command('app:kelola-laporan-otomatis')
-//     ->daily();
+//LAPORAN------------------
+Schedule::command('app:kelola-laporan-otomatis')
+    ->daily();
 
-    Schedule::command('app:kelola-laporan-otomatis')
-    ->everyMinute();
+    // Schedule::command('app:kelola-laporan-otomatis')
+    // ->everyMinute();
 
     // php artisan schedule:work
 

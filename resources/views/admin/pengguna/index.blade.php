@@ -172,7 +172,7 @@
                                 id="platon_id_{{ $user->id }}" 
                                 onchange="filterRegu('{{ $user->id }}')"
                                 class="w-full px-3 py-2 border border-outline rounded-lg bg-surface text-on-surface focus:outline-none focus:ring-2 focus:ring-primary transition-colors">
-                          <option value="">Pilih Platon</option>
+                          <option value="">Pilih Peleton</option>
                           @foreach($platons as $platon)
                             <option value="{{ $platon->id }}" @selected($user->platon_id == $platon->id)>
                               {{ $platon->nama }}

@@ -325,7 +325,6 @@ public function update(Request $request, $id)
     $laporanselesai = Laporan::where('status','Selesai')->count();
     $poskos = Posko::all();
     $platons = Platon::all();
-    $platons = Platon::all();
     $total = Laporan::count();
     $regus = Regu::query();
    $query = Laporan::with([
@@ -337,26 +336,26 @@ public function update(Request $request, $id)
     'laporanKondisis.kondisi'
 ]);
 
-    if ($request->search) {
 
-        $query->where(function ($q) use ($request) {
+   if ($request->filled('search')) {
 
-            $q->whereHas('user', function ($user) use ($request) {
+    $search = trim($request->search);
 
-                $user->where('name', 'like', '%' . $request->search . '%');
+    $query->where(function ($q) use ($search) {
 
-            })
+        $q->whereHas('user', function ($user) use ($search) {
+            $user->where('name', 'like', '%' . $search . '%');
+        })
 
-            ->orWhereHas('kendaraan', function ($kendaraan) use ($request) {
+        ->orWhereHas('kendaraan', function ($kendaraan) use ($search) {
+            $kendaraan->where('nomor_polisi', 'like', '%' . $search . '%');
+        })
 
-                $kendaraan->where('nomor_polisi', 'like', '%' . $request->search . '%');
+        ->orWhere('nama_posko', 'like', '%' . $search . '%');
 
-            })
-
-            ->orWhere('nama_posko', 'like', '%' . $request->search . '%');
-
-        });
-    }
+    });
+}
+    
 
  if ($request->filled('status')) {
     $query->where('status', $request->status);
@@ -398,8 +397,11 @@ $regus = $regus->get();
 
         ]);
     }
+
     $poskos = Posko::orderBy('nama_posko')->get();
+    
     $laporans = $query->latest()->paginate(10);
+    
 
     return view('admin.laporan.index', compact('total','laporans','poskos','platons','regus','laporanproses','laporanselesai'));
 }
@@ -423,8 +425,15 @@ $regus = $regus->get();
 
    public function updateStatus(Request $request, Laporan $laporan)
 {
+     if (!$laporan->user) {
+        return back()->with(
+            'error',
+            'Status laporan tidak dapat diubah karena user yang membuat laporan sudah dinonaktifkan.'
+        );
+    }
+
     $request->validate([
-        'status' => 'required|in:Diproses,Selesai,Diarsipkan,Ditolak',
+        'status' => 'required|in:Diproses,Selesai,Diarsipkan',
     ]);
 
      $statusLama = $laporan->status;
@@ -555,20 +564,24 @@ $regus = $regus->get();
     ]);
 
 
-    if ($request->search) {
+   if ($request->filled('search')) {
 
-        $query->where(function ($q) use ($request) {
+    $search = trim($request->search);
 
-            $q->whereHas('user', function ($user) use ($request) {
+    $query->where(function ($q) use ($search) {
 
-                $user->where('name', 'like', '%' . $request->search . '%');
+        $q->whereHas('user', function ($user) use ($search) {
+            $user->where('name', 'like', '%' . $search . '%');
+        })
 
-            })
+        ->orWhereHas('kendaraan', function ($kendaraan) use ($search) {
+            $kendaraan->where('nomor_polisi', 'like', '%' . $search . '%');
+        })
 
-            ->orWhere('nama_posko', 'like', '%' . $request->search . '%');
-        });
+        ->orWhere('nama_posko', 'like', '%' . $search . '%');
 
-    }
+    });
+}
     if ($request->filled('status')) {
     $query->where('status', $request->status);
 }

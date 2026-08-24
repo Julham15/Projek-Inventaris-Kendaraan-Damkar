@@ -60,7 +60,7 @@
 <label class="text-caption font-medium text-on-surface-variant">Pencarian</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-h4">search</span>
-<input class="w-full pl-8 pr-md py-2 border border-outline-variant rounded-lg text-body-regular focus:ring-primary focus:border-primary bg-surface-bright" placeholder="Cari pelapor / kendaraan..." type="text"    name="search" value="{{ request('search') }}">
+<input class="w-full pl-8 pr-md py-2 border border-outline-variant rounded-lg text-body-regular focus:ring-primary focus:border-primary bg-surface-bright" placeholder="Cari pelapor / Kendaraan..." type="text"    name="search" value="{{ request('search') }}">
 </div>
 </div>
 <!-- Status Filter -->
